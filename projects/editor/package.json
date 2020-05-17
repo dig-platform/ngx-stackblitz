@@ -1,0 +1,10 @@
+{
+  "name": "ngx-stackblitz-editor",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@angular/common": "^9.1.7",
+    "@angular/core": "^9.1.7",
+    "tslib": "^1.10.0",
+    "@stackblitz/sdk": "^1.4.0"
+  }
+}
