@@ -9,4 +9,4 @@ import { EditorComponent } from './editor.component';
   ],
   exports: [EditorComponent]
 })
-export class EditorModule { }
+export class NgxStackblitzModule { }

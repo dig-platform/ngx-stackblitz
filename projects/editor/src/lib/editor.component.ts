@@ -23,7 +23,6 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
 
   @ViewChild('editor') editor: ElementRef;
 
-  @Input() src: string; // github repo path ie: https://stackblitz.com/edit/github-dq5dst
   @Input() repo: string; // github repo path ie: dig-hub/my-plugin
   @Input() openFile: string; // Show a specific file on embed load
   @Input() view: string; // preview | editor

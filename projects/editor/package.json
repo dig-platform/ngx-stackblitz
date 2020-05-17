@@ -1,6 +1,13 @@
 {
-  "name": "ngx-stackblitz-editor",
-  "version": "0.0.1",
+  "name": "ngx-stackblitz",
+  "author": "Forrest Lyman",
+  "description": "StackBlitz editor component for Angular",
+  "keywords": ["angular","angular9","stackblitz", "visual studio code"],
+  "version": "0.0.6",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/aventuratech/ngx-stackblitz"
+  },
   "peerDependencies": {
     "@angular/common": "^9.1.7",
     "@angular/core": "^9.1.7",

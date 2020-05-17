@@ -1,27 +1,60 @@
-# NgxStackblitz
+NgxStackblitz
+=============
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.0.
+Embed StackBlitz editor
 
-## Development server
+```shell script
+npm install @stackblitz/sdk ngx-stackblitz
+```
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Embed GithubProject
+-------------------
 
-## Code scaffolding
+```html
+<ngx-stackblitz-editor 
+    repo="dig-platform/plugin-template" 
+    (changed)="saveTree($event)"></ngx-stackblitz-editor>
+```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-## Build
+### Editor API
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+| Name | Description |
+| ---- | ----------- |
+| ` @Input() repo: string;` | github repo path ie: dig-hub/my-plugin |
+| `@Input() openFile: string;` | Path to file that should open initially |
+| `@Input() view: string;` | (preview / editor) editor view |
+| `@Input() height: string;` | Editor height, defaults to 100% |
+| `@Input() width: string;` | Editor width, defaults to 100% |
+| `@Input() hideExplorer: boolean;` | Hide the file explorer, defaults to false |
+| `@Input() hideNavigation: boolean;` | Hide the editor nav, defaults to false |
+| `@Input() fileReadInterval: number;` | Interval (milliseconds) to poll editor for changes, defaults to every second |
+| `@Output() changed: EventEmitter<EditorChangeEvent>` | emitted every time the tree changes |
+| `@Output() created: EventEmitter<EditorFile>` | emitted when a file is created |
+| `@Output() updated: EventEmitter<EditorFile>` | emitted when a file is updated |
+| `@Output() deleted: EventEmitter<EditorFile>` | emitted when a file is deleted |
 
-## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Interfaces
 
-## Running end-to-end tests
+```typescript
+export interface EditorFile {
+  path: string;
+  content: string;
+  status?: string;
+}
+```
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+```typescript
+export interface EditorChangeEvent {
+  tree: EditorFile[];
+  created?: EditorFile[];
+  updated?: EditorFile[];
+  deleted?: EditorFile[];
+}
+```
 
-## Further help
+Embed New Project
+-----------------
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Coming soon...

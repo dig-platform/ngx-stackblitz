@@ -3,4 +3,4 @@
  */
 
 export * from './lib/editor.component';
-export * from './lib/editor.module';
+export * from './lib/ngx-stackblitz.module';

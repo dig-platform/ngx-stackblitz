@@ -1,24 +1,60 @@
-# Editor
+NgxStackblitz
+=============
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.7.
+Embed StackBlitz editor
 
-## Code scaffolding
+```shell script
+npm install @stackblitz/sdk ngx-stackblitz
+```
 
-Run `ng generate component component-name --project editor` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project editor`.
-> Note: Don't forget to add `--project editor` or else it will be added to the default project in your `angular.json` file. 
+Embed GithubProject
+-------------------
 
-## Build
+```html
+<ngx-stackblitz-editor 
+    repo="dig-platform/plugin-template" 
+    (changed)="saveTree($event)"></ngx-stackblitz-editor>
+```
 
-Run `ng build editor` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-## Publishing
+### Editor API
 
-After building your library with `ng build editor`, go to the dist folder `cd dist/editor` and run `npm publish`.
+| Name | Description |
+| ---- | ----------- |
+| ` @Input() repo: string;` | github repo path ie: dig-hub/my-plugin |
+| `@Input() openFile: string;` | Path to file that should open initially |
+| `@Input() view: string;` | (preview / editor) editor view |
+| `@Input() height: string;` | Editor height, defaults to 100% |
+| `@Input() width: string;` | Editor width, defaults to 100% |
+| `@Input() hideExplorer: boolean;` | Hide the file explorer, defaults to false |
+| `@Input() hideNavigation: boolean;` | Hide the editor nav, defaults to false |
+| `@Input() fileReadInterval: number;` | Interval (milliseconds) to poll editor for changes, defaults to every second |
+| `@Output() changed: EventEmitter<EditorChangeEvent>` | emitted every time the tree changes |
+| `@Output() created: EventEmitter<EditorFile>` | emitted when a file is created |
+| `@Output() updated: EventEmitter<EditorFile>` | emitted when a file is updated |
+| `@Output() deleted: EventEmitter<EditorFile>` | emitted when a file is deleted |
 
-## Running unit tests
 
-Run `ng test editor` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Interfaces
 
-## Further help
+```typescript
+export interface EditorFile {
+  path: string;
+  content: string;
+  status?: string;
+}
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+```typescript
+export interface EditorChangeEvent {
+  tree: EditorFile[];
+  created?: EditorFile[];
+  updated?: EditorFile[];
+  deleted?: EditorFile[];
+}
+```
+
+Embed New Project
+-----------------
+
+Coming soon...
