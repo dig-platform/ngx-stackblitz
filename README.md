@@ -30,6 +30,7 @@ Embed GithubProject
 | `@Input() hideNavigation: boolean;` | Hide the editor nav, defaults to false |
 | `@Input() fileReadInterval: number;` | Interval (milliseconds) to poll editor for changes, defaults to every second |
 | `@Output() changed: EventEmitter<EditorChangeEvent>` | emitted every time the tree changes |
+| `@Output() loaded: EventEmitter<EditorFile[]>` | emitted when the tree is loaded |
 | `@Output() created: EventEmitter<EditorFile>` | emitted when a file is created |
 | `@Output() updated: EventEmitter<EditorFile>` | emitted when a file is updated |
 | `@Output() deleted: EventEmitter<EditorFile>` | emitted when a file is deleted |

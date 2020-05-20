@@ -36,6 +36,9 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
   // emitted every time the tree changes
   @Output() changed: EventEmitter<EditorChangeEvent> = new EventEmitter<EditorChangeEvent>();
 
+  // emitted when a the editor has loaded the file tree
+  @Output() loaded: EventEmitter<EditorFile[]> = new EventEmitter<EditorFile[]>();
+
   // emitted when a file is created
   @Output() created: EventEmitter<EditorFile> = new EventEmitter<EditorFile>();
 
@@ -53,6 +56,8 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
   private files: EditorFile[];
 
   private fileInterval: any;
+
+  private isLoaded: boolean;
 
   get options() {
     const {openFile, view, height, width, hideExplorer, hideNavigation, forceEmbed} = this;
@@ -90,6 +95,9 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
 
       if (! this.files) {
         this.files = fileArray;
+        this.changed.emit({
+          tree: fileArray
+        });
         return;
       }
 
@@ -128,6 +136,11 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
       }
 
       this.files = fileArray;
+
+      if (! this.isLoaded) {
+        this.loaded.emit(fileArray);
+        this.isLoaded = true;
+      }
     }, console.error);
   }
 
