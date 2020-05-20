@@ -95,9 +95,6 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
 
       if (! this.files) {
         this.files = fileArray;
-        if (this.files) {
-          this.loaded.emit({tree: this.files});
-        }
         return;
       }
 
@@ -138,7 +135,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
       this.files = fileArray;
 
       if (! this.isLoaded) {
-        this.loaded.emit(fileArray);
+        this.loaded.emit({tree: fileArray});
         this.isLoaded = true;
       }
     }, console.error);
