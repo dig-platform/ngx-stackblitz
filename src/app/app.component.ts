@@ -7,4 +7,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'ngx-stackblitz';
+
+  public files = {
+    'index.html': '<h1>My Test Page</h1>',
+    'index.js': 'console.log("my test")'
+  }
+
+  saveTree(tree) {
+    console.log({tree});
+  }
 }

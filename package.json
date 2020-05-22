@@ -11,6 +11,7 @@
     "build": "ng build",
     "build:watch": "ng build editor --watch",
     "build:editor": "ng build editor --prod",
+    "publish": "npm run build:editor && cd dist/editor && npm publish",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

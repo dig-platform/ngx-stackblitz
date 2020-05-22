@@ -3,7 +3,7 @@
   "author": "Forrest Lyman",
   "description": "StackBlitz editor component for Angular",
   "keywords": ["angular","angular9","stackblitz", "visual studio code"],
-  "version": "0.0.6",
+  "version": "0.2.1",
   "repository": {
     "type" : "git",
     "url" : "https://github.com/aventuratech/ngx-stackblitz"
