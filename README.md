@@ -19,7 +19,7 @@ files = {
 
 ```html
 <ngx-stackblitz-editor 
-    files="files" 
+    [files]="files" 
     title="My test project"
     description="Just a test"
     template="javascript"
@@ -35,7 +35,7 @@ files = {
 | `@Input() title: string;` | Project title |
 | `@Input() description: string;` | Project description |
 | `@Input() template: 'angular-cli' / 'create-react-app' / 'typescript' / 'javascript';` | Type of project to create |
-| `@Input() tags?: string;` | Project tags |
+| `@Input() tags?: string[];` | Project tags |
 | `@Input() dependencies?: {[name: string]: string};` | NPM dependencies |
 | `@Input() settings?: any;` | Stackblitz Settings |
 | `@Input() openFile: string;` | Path to file that should open initially |

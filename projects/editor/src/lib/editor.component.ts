@@ -23,6 +23,14 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
 
   @ViewChild('editor') editor: ElementRef;
 
+  @Input() projectID: string; // existing project id
+  @Input() files: {[path: string]: string}; // List of files to add to the project
+  @Input() title: string; // Project title
+  @Input() description: string; // Project description
+  @Input() template: 'angular-cli' | 'create-react-app' | 'typescript' | 'javascript'; // Type of project to create
+  @Input() tags: string[]; // github repo path ie: dig-hub/my-plugin
+  @Input() dependencies?: {[name: string]: string}; // NPM dependencies
+  @Input() settings: any; // Stackblitz Settings
   @Input() repo: string; // github repo path ie: dig-hub/my-plugin
   @Input() openFile: string; // Show a specific file on embed load
   @Input() view: string; // preview | editor
@@ -52,8 +60,8 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
   // editor instance vm
   private vm: any;
 
-  // editor files
-  private files: EditorFile[];
+  // editor fileTree
+  private fileTree: EditorFile[];
 
   private fileInterval: any;
 
@@ -71,10 +79,25 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
   }
 
   loadEditor() {
-    stackblitz.embedGithubProject(this.editor.nativeElement,  this.repo, this.options).then(vm => {
-      this.vm = vm;
-      this.watchFiles();
-    }, console.error);
+    if (this.repo) {
+      stackblitz.embedGithubProject(this.editor.nativeElement,  this.repo, this.options).then(vm => {
+        this.vm = vm;
+        this.watchFiles();
+      }, console.error);
+    } else if (this.projectID) {
+      stackblitz.embedProjectId(this.editor.nativeElement, this.projectID, this.options).then(vm => {
+        this.vm = vm;
+        this.watchFiles();
+      }, console.error);
+    } else {
+      const {files, title, description, template, tags, dependencies, settings} = this;
+      const project = {files, title, description, template, tags, dependencies, settings};
+      console.log(files);
+      stackblitz.embedProject(this.editor.nativeElement, project, this.options).then(vm => {
+        this.vm = vm;
+        this.watchFiles();
+      }, console.error);
+    }
   }
 
   watchFiles() {
@@ -85,21 +108,21 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
     if (! this.vm) {
       return false;
     }
-    this.vm.getFsSnapshot().then(files => {
-      const fileArray = Object.keys(files).map(path => {
+    this.vm.getFsSnapshot().then(fileTree => {
+      const fileArray = Object.keys(fileTree).map(path => {
         return {
           path,
-          content: files[path]
+          content: fileTree[path]
         };
       });
 
-      if (! this.files) {
-        this.files = fileArray;
+      if (! this.fileTree) {
+        this.fileTree = fileArray;
         return;
       }
 
       const changedFiles = fileArray.filter((file: EditorFile) => {
-        const current = this.files.find(f => f.path === file.path);
+        const current = this.fileTree.find(f => f.path === file.path);
         return current && current.content !== file.content;
       });
 
@@ -108,14 +131,14 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
       }
 
       const newFiles = fileArray.filter((file: EditorFile) => {
-        return ! this.files.find(f => f.path === file.path);
+        return ! this.fileTree.find(f => f.path === file.path);
       });
 
       if (newFiles) {
         newFiles.forEach(file => this.created.emit(file));
       }
 
-      const deletedFiles = this.files.filter((file: EditorFile) => {
+      const deletedFiles = this.fileTree.filter((file: EditorFile) => {
         return ! fileArray.find(f => f.path === file.path);
       });
 
@@ -132,7 +155,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
         });
       }
 
-      this.files = fileArray;
+      this.fileTree = fileArray;
 
       if (! this.isLoaded) {
         this.loaded.emit({tree: fileArray});
