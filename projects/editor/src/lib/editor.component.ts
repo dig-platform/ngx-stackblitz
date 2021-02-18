@@ -1,6 +1,23 @@
 import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import stackblitz from '@stackblitz/sdk';
 
+export interface EditorVM {
+  editor: {
+    openFile(path: string): Promise<any>
+  };
+  preview: {
+    origin: string;
+  };
+  applyFsDiff(diff: {
+    create: {
+      [path: string]: string;
+    };
+    destroy: string[];
+  }): Promise<{}>;
+  getFsSnapshot(): Promise<{}>;
+  getDependencies(): Promise<{}>;
+}
+
 export interface EditorFile {
   path: string;
   content: string;
@@ -47,6 +64,9 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
   // emitted when a the editor has loaded the file tree
   @Output() loaded: EventEmitter<EditorChangeEvent> = new EventEmitter<EditorChangeEvent>();
 
+  // emitted when a the editor has loaded the file tree
+  @Output() vmLoaded: EventEmitter<EditorVM | undefined> = new EventEmitter<EditorVM | undefined>();
+
   // emitted when a file is created
   @Output() created: EventEmitter<EditorFile> = new EventEmitter<EditorFile>();
 
@@ -81,23 +101,27 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
   loadEditor() {
     if (this.repo) {
       stackblitz.embedGithubProject(this.editor.nativeElement,  this.repo, this.options).then(vm => {
-        this.vm = vm;
+        this.setVm(vm);
         this.watchFiles();
       }, console.error);
     } else if (this.projectID) {
       stackblitz.embedProjectId(this.editor.nativeElement, this.projectID, this.options).then(vm => {
-        this.vm = vm;
+        this.setVm(vm);
         this.watchFiles();
       }, console.error);
     } else {
       const {files, title, description, template, tags, dependencies, settings} = this;
       const project = {files, title, description, template, tags, dependencies, settings};
-      console.log(files);
       stackblitz.embedProject(this.editor.nativeElement, project, this.options).then(vm => {
-        this.vm = vm;
+        this.setVm(vm);
         this.watchFiles();
       }, console.error);
     }
+  }
+
+  setVm(vm: any) {
+    this.vm = vm;
+    this.vmLoaded.emit(vm);
   }
 
   watchFiles() {

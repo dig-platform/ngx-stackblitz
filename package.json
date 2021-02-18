@@ -2,8 +2,8 @@
   "name": "ngx-stackblitz",
   "version": "0.0.1",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/aventuratech/ngx-stackblitz"
+    "type": "git",
+    "url": "https://github.com/aventuratech/ngx-stackblitz"
   },
   "scripts": {
     "ng": "ng",
@@ -11,7 +11,7 @@
     "build": "ng build",
     "build:watch": "ng build editor --watch",
     "build:editor": "ng build editor --prod",
-    "publish": "npm run build:editor && cd dist/editor && npm publish",
+    "publish": "npm run build:editor && cd dist/editor && npm publish --public",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
